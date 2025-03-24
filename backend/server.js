@@ -19,14 +19,13 @@ mongoose
 const habitRoutes = require("./routes/habitRoutes");
 app.use("/api/habits", habitRoutes);
 
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
+
+
 // Ruta raíz para verificar si el backend responde
 app.get("/", (req, res) => {
   res.send("API is running...");
-});
-
-// Manejo de rutas incorrectas
-app.use((req, res) => {
-  res.status(404).json({ error: "Ruta no encontrada" });
 });
 
 // 🔥 Código para mostrar rutas registradas en Express
@@ -36,7 +35,14 @@ app._router.stack.forEach((r) => {
   }
 });
 
+// Manejo de rutas incorrectas
+app.use((req, res) => {
+  res.status(404).json({ error: "Ruta no encontrada" });
+});
+
+
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+

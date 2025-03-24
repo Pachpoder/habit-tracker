@@ -120,4 +120,49 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+  router.post("/done/:id", async (req, res) => {
+    try {
+        const habit = await Habit.findById(req.params.id);
+
+        if (!habit) {
+            return res.status(404).json({ message: "Hábito no encontrado" });
+        }
+
+        const today = new Date();
+        const lastCompleted = habit.lastCompleted ? new Date(habit.lastCompleted) : null;
+
+        const isSameDay =
+            lastCompleted &&
+            today.toDateString() === lastCompleted.toDateString();
+
+        if (isSameDay) {
+            return res.status(400).json({ message: "Este hábito ya fue marcado hoy" });
+        }
+
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+
+        const isYesterday =
+            lastCompleted &&
+            yesterday.toDateString() === lastCompleted.toDateString();
+
+        if (isYesterday || !lastCompleted) {
+            habit.completedDays += 1;
+        } else {
+            habit.completedDays = 1; // Reinicio de racha
+        }
+
+        habit.lastCompleted = today;
+
+        await habit.save();
+        res.json(habit);
+    } catch (error) {
+        console.error("❌ Error al marcar hábito como hecho:", error);
+        res.status(500).json({ error: "Error al actualizar el hábito" });
+    }
+});
+
+
+  
+
 module.exports = router;

@@ -1,6 +1,7 @@
 import { Provider } from "react-redux";
 import store from "../store"; 
-import "../styles/globals.css"; 
+import '../styles/globals.css'; // <-- asegúrate de este path
+
 
 function MyApp({ Component, pageProps }) {
   return (
