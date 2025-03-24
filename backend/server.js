@@ -19,7 +19,7 @@ mongoose
 const habitRoutes = require("./routes/habitRoutes");
 app.use("/api/habits", habitRoutes);
 
-// Ruta raíz para verificar si el backend responde
+// Ruta raiz para verificar si el backend responde
 app.get("/", (req, res) => {
   res.send("API is running...");
 });

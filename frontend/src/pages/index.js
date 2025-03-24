@@ -55,14 +55,13 @@ export default function Home() {
                 </p>
               </div>
               <button className="relative group overflow-hidden px-6 py-2 bg-gradient-to-tr from-blue-500 to-indigo-600 text-white rounded-full shadow-md hover:shadow-xl transition-all duration-300">
-  <span className="relative z-10 font-medium">Done</span>
-  <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-all duration-300 rounded-full blur-sm z-0" />
-</button>
+                <span className="relative z-10 font-medium">Done</span>
+                <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-all duration-300 rounded-full blur-sm z-0" />
+              </button>
             </div>
           ))}
         </section>
 
-        {/* Barra de progreso estática */}
         <section className="mt-12">
           <h3 className="mb-2 text-lg font-medium text-gray-700 dark:text-gray-300">
             Progreso general
