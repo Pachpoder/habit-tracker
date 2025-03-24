@@ -61,8 +61,6 @@ export default function Home() {
             </div>
           ))}
         </section>
-
-        {/* Barra de progreso estática */}
         <section className="mt-12">
           <h3 className="mb-2 text-lg font-medium text-gray-700 dark:text-gray-300">
             Progreso general

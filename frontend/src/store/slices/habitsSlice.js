@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Definir la API del backend
 const API_URL = "http://localhost:5000/api/habits";
 
-// Acción asíncrona para obtener los hábitos desde el backend
 export const fetchHabits = createAsyncThunk("habits/fetchHabits", async (_, { rejectWithValue }) => {
   try {
-    console.log("🕵️‍♂️ Fetching habits from:", API_URL); // Debugging
+    console.log("🕵️‍♂️ Fetching habits from:", API_URL); 
     const response = await fetch(API_URL);
     if (!response.ok) throw new Error(`Error al obtener los hábitos: ${response.statusText}`);
     return await response.json();
@@ -15,14 +13,12 @@ export const fetchHabits = createAsyncThunk("habits/fetchHabits", async (_, { re
   }
 });
 
-// Estado inicial
 const initialState = {
   habits: [],
   loading: false,
   error: null,
 };
 
-// Slice de Redux para manejar los hábitos
 const habitsSlice = createSlice({
   name: "habits",
   initialState,
@@ -56,6 +52,5 @@ const habitsSlice = createSlice({
   },
 });
 
-// Exportar acciones y reducer
 export const { setHabits, setLoading, setError } = habitsSlice.actions;
 export default habitsSlice.reducer;
