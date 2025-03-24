@@ -1,9 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// API base
 const API_URL = "http://localhost:5000/api/habits";
 
-// Acción para obtener todos los hábitos
 export const fetchHabits = createAsyncThunk(
   "habits/fetchHabits",
   async (_, { rejectWithValue }) => {
@@ -18,7 +16,6 @@ export const fetchHabits = createAsyncThunk(
   }
 );
 
-// ✅ Acción para marcar hábito como completado
 export const markHabitDone = createAsyncThunk(
   "habits/markHabitDone",
   async (habitId, { rejectWithValue }) => {
@@ -27,11 +24,10 @@ export const markHabitDone = createAsyncThunk(
         method: "POST",
       });
 
-      // Manejo especial del 400 (ya fue marcado hoy)
       if (response.status === 400) {
         const data = await response.json();
-        console.warn("⚠️ Ya fue marcado hoy:", data.message); // Puedes quitarlo si no lo quieres en consola
-        return rejectWithValue(null); // Evitamos mostrarlo como error visible
+        console.warn("⚠️ Ya fue marcado hoy:", data.message); 
+        return rejectWithValue(null); 
       }
 
       if (!response.ok) throw new Error("Error al marcar el hábito como hecho");
@@ -66,7 +62,6 @@ const habitsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Obtener hábitos
       .addCase(fetchHabits.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -79,7 +74,6 @@ const habitsSlice = createSlice({
         state.error = action.payload;
         state.loading = false;
       })
-      // ✅ Marcar hábito como hecho
       .addCase(markHabitDone.fulfilled, (state, action) => {
         const updatedHabit = action.payload;
         const index = state.habits.findIndex((h) => h._id === updatedHabit._id);

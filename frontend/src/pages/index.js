@@ -30,7 +30,6 @@ export default function Home() {
 
         {loading && <p style={{ color: "#3b82f6" }}>Cargando hábitos...</p>}
 
-        {/* Solo muestra errores que no sean 400 */}
         {error && !error.includes("marcar el hábito") && (
           <p style={{ color: "red" }}>Error: {error}</p>
         )}
