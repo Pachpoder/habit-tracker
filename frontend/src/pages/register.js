@@ -32,7 +32,6 @@ export default function Register() {
 
       setMessage("✅ Usuario registrado con éxito");
 
-      // Redirigir al login luego de 1.5 segundos
       setTimeout(() => {
         router.push("/login");
       }, 1500);
