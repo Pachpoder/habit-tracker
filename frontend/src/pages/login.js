@@ -28,6 +28,7 @@ export default function LoginPage() {
       }
 
       localStorage.setItem("userId", data.userId);
+      localStorage.setItem("token", data.token);
       router.push("/");
     } catch (err) {
       setError(err.message);

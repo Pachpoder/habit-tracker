@@ -2,12 +2,22 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const API_URL = "http://localhost:5000/api/habits";
 
+const getAuthHeader = () => {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 export const fetchHabits = createAsyncThunk(
   "habits/fetchHabits",
   async (_, { rejectWithValue }) => {
     try {
-      console.log("🕵️‍♂️ Fetching habits from:", API_URL);
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeader(),
+        },
+      });
+
       if (!response.ok) throw new Error(`Error al obtener los hábitos: ${response.statusText}`);
       return await response.json();
     } catch (error) {
@@ -22,12 +32,16 @@ export const markHabitDone = createAsyncThunk(
     try {
       const response = await fetch(`${API_URL}/done/${habitId}`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeader(),
+        },
       });
 
       if (response.status === 400) {
         const data = await response.json();
-        console.warn("⚠️ Ya fue marcado hoy:", data.message); 
-        return rejectWithValue(null); 
+        console.warn("⚠️ Ya fue marcado hoy:", data.message);
+        return rejectWithValue(null);
       }
 
       if (!response.ok) throw new Error("Error al marcar el hábito como hecho");
@@ -38,6 +52,32 @@ export const markHabitDone = createAsyncThunk(
     }
   }
 );
+
+export const addHabit = createAsyncThunk(
+  "habits/addHabit",
+  async (habitName, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${API_URL}/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeader(),
+        },
+        body: JSON.stringify({ name: habitName }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Error al agregar hábito");
+      }
+
+      return await res.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState = {
   habits: [],
   loading: false,
@@ -82,6 +122,14 @@ const habitsSlice = createSlice({
         }
       })
       .addCase(markHabitDone.rejected, (state, action) => {
+        if (action.payload) {
+          state.error = action.payload;
+        }
+      })
+      .addCase(addHabit.fulfilled, (state, action) => {
+        state.habits.push(action.payload);
+      })
+      .addCase(addHabit.rejected, (state, action) => {
         if (action.payload) {
           state.error = action.payload;
         }

@@ -1,19 +1,23 @@
 const express = require("express");
 const Habit = require("../models/Habit");
 const mongoose = require("mongoose");
+const verifyToken = require("../middleware/authMiddleware");
+
 
 const router = express.Router();
 
 // Crear un nuevo hábito
-router.post("/add", async (req, res) => {
+router.post("/add", verifyToken, async (req, res) => {
     try {
-        const { name, userId } = req.body;
+        const { name } = req.body;
+        const userId = req.userId;
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ error: "El userId no es válido" });
         }
 
-        const habit = new Habit({ name, userId: new mongoose.Types.ObjectId(userId) });
+        const habit = new Habit({ name, userId });
+
         await habit.save();
         res.status(201).json(habit);
     } catch (error) {
@@ -119,7 +123,7 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
-  router.post("/done/:id", async (req, res) => {
+router.post("/done/:id", async (req, res) => {
     try {
         const habit = await Habit.findById(req.params.id);
 
@@ -148,7 +152,7 @@ router.delete("/:id", async (req, res) => {
         if (isYesterday || !lastCompleted) {
             habit.completedDays += 1;
         } else {
-            habit.completedDays = 1; 
+            habit.completedDays = 1;
         }
 
         habit.lastCompleted = today;
@@ -162,6 +166,6 @@ router.delete("/:id", async (req, res) => {
 });
 
 
-  
+
 
 module.exports = router;
