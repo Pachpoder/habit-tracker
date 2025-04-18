@@ -1,6 +1,7 @@
 // pages/login.js
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
 
@@ -77,12 +78,9 @@ export default function LoginPage() {
         </button>
         <p className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
           ¿No tienes cuenta?{" "}
-          <a
-            href="/register"
-            className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
-          >
+          <Link href="/register" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
             Regístrate aquí
-          </a>
+          </Link>
         </p>
       </form>
     </main>

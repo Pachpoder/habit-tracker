@@ -15,7 +15,7 @@ export default function Home() {
     } else {
       dispatch(fetchHabits());
     }
-  }, [dispatch]);
+  }, [dispatch, router]);
 
   const handleMarkDone = (id) => {
     dispatch(markHabitDone(id));
