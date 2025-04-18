@@ -11,9 +11,7 @@ router.post("/register", async (req, res) => {
     const userExist = await User.findOne({ email });
     if (userExist) return res.status(400).json({ message: "El usuario ya existe" });
 
-    const hashedPassword = await bcrypt.hash(password, 10); // 👈 hashea la contraseña
-
-    const newUser = new User({ name, email, password: hashedPassword });
+    const newUser = new User({ name, email, password });
     await newUser.save();
 
     res.status(201).json({ message: "Usuario creado exitosamente" });
