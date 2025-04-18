@@ -1,7 +1,7 @@
 // frontend/store/slices/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/auth`;
 
 export const registerUser = createAsyncThunk("auth/registerUser", async (userData, { rejectWithValue }) => {
   try {

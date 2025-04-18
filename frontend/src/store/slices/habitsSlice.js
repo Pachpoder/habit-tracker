@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const API_URL = "http://localhost:5000/api/habits";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/habits`;
 
 const getAuthHeader = () => {
   const token = localStorage.getItem("token");
